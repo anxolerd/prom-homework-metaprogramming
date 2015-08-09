@@ -12,13 +12,28 @@ db = [
 
 
 class Field:
-    _eq_fmt = '{}.{} = {}'
+    _eq_fmt = '{}.{} {} {}'
 
     def __init__(self, *args, **kwargs):
         pass
 
     def __eq__(self, other):
-        return self._eq_fmt.format(self._tbname, self._name, other)
+        return self._eq_fmt.format(self._tbname, self._name, '=', other)
+
+    def __ne__(self, other):
+        return self._eq_fmt.format(self._tbname, self._name, '!=', other)
+
+    def __lt__(self, other):
+        return self._eq_fmt.format(self._tbname, self._name, '<', other)
+
+    def __gt__(self, other):
+        return self._eq_fmt.format(self._tbname, self._name, '>', other)
+
+    def __le__(self, other):
+        return self._eq_fmt.format(self._tbname, self._name, '<=', other)
+
+    def __ge__(self, other):
+        return self._eq_fmt.format(self._tbname, self._name, '>=', other)
 
     def __get__(self, instance, owner):
         if isinstance(instance, (Entity)):
@@ -45,12 +60,12 @@ class Field:
 
 
 class TextField(Field):
-    _eq_fmt = '"{}"."{}" = \'{}\''
+    _eq_fmt = '"{}"."{}" {} \'{}\''
     pass
 
 
 class IntegerField(Field):
-    _eq_fmt = '"{}"."{}" = {}'
+    _eq_fmt = '"{}"."{}" {} {}'
     pass
 
 
